@@ -134,7 +134,7 @@
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20001.png">
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20002.png">
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20003.png">
-<meta property="og:updated_time" content="2018-01-11T02:44:54.712Z">
+<meta property="og:updated_time" content="2018-01-11T02:48:15.005Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCD of Swift 4.0">
 <meta name="twitter:description" content="##GCD Concepts Grand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。">
@@ -427,16 +427,12 @@
 <p>队列可以是串行或并发的。串行队列保证在任何给定的时间只有一个任务运行。GCD控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：</p>
 <blockquote>
 <ul>
-<li>Serial Dispatch Queue：串行队列，串行队列保证在任何给定的时间只有一个任务运行。GCD控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：</li>
+<li><p>Serial Dispatch Queue：串行队列，串行队列保证在任何给定的时间只有一个任务运行。GCD控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：<br><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20002.png" alt=""></p>
+</li>
+<li><p>Concurrent Dispatch Queue：并发队列，并发队列允许同时运行多个任务。保证任务按照他们添加的顺序开始。任务可以按任意顺序完成，并且您不知道下一个任务要开始的时间，也不知道在任何给定时间运行的任务的数量。<br><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20003.png" alt=""></p>
+</li>
 </ul>
 </blockquote>
-<p><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20002.png" alt=""></p>
-<blockquote>
-<ul>
-<li>Concurrent Dispatch Queue：并发队列，并发队列允许同时运行多个任务。保证任务按照他们添加的顺序开始。任务可以按任意顺序完成，并且您不知道下一个任务要开始的时间，也不知道在任何给定时间运行的任务的数量。</li>
-</ul>
-</blockquote>
-<p><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20003.png" alt=""></p>
 
       
     </div>
