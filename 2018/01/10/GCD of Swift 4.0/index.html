@@ -132,7 +132,9 @@
 <meta property="og:description" content="##GCD Concepts Grand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20001.png">
-<meta property="og:updated_time" content="2018-01-11T01:21:27.499Z">
+<meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20002.png">
+<meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20003.png">
+<meta property="og:updated_time" content="2018-01-11T02:44:54.712Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCD of Swift 4.0">
 <meta name="twitter:description" content="##GCD Concepts Grand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。">
@@ -420,13 +422,21 @@
 <p><strong>请注意：</strong>GCD根据系统和可用系统资源决定需要多少并行性。需要注意的是并行性需要并发性，但并发并不能保证并行性。</p>
 <p>基本上，并发是关于结构，而并行是关于执行。</p>
 <p>###Dispatch Queue</p>
-<p>Dispatch Queue是用来添加任务的队列，任务在队列中执行，是GCD的基本元素之一。<br>Dispatch Queue分为两种：</p>
+<p>GCD提供Dispatch Queue来调度和管理提交的任务，Dispatch Queue是用来添加任务的队列，任务在队列中执行，是GCD的基本元素之一。</p>
+<p>调度队列是线程安全的，这意味着您可以同时从多个线程访问它们。当了解调度队列如何为自己的代码部分提供线程安全性时，GCD的好处就显而易见了。这里的关键是要选择合适的调度队列种类提交到队列中。</p>
+<p>队列可以是串行或并发的。串行队列保证在任何给定的时间只有一个任务运行。GCD控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：</p>
 <blockquote>
 <ul>
-<li>Serial Dispatch Queue：串行队列，按添加进队列的顺序（先进先出）一个接一个的执行</li>
-<li>Concurrent Dispatch Queue：并发队列，并发执行队列里的任务</li>
+<li>Serial Dispatch Queue：串行队列，串行队列保证在任何给定的时间只有一个任务运行。GCD控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：</li>
 </ul>
 </blockquote>
+<p><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20002.png" alt=""></p>
+<blockquote>
+<ul>
+<li>Concurrent Dispatch Queue：并发队列，并发队列允许同时运行多个任务。保证任务按照他们添加的顺序开始。任务可以按任意顺序完成，并且您不知道下一个任务要开始的时间，也不知道在任何给定时间运行的任务的数量。</li>
+</ul>
+</blockquote>
+<p><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20003.png" alt=""></p>
 
       
     </div>
