@@ -123,19 +123,19 @@
 
 
 
-<meta name="description" content="##GCD ConceptsGrand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。 ###Concurrency 在iOS中，一个进程或应用程序由一个或多个线程组">
+<meta name="description" content="##GCD Concepts Grand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。">
 <meta name="keywords" content="GCD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GCD of Swift 4.0">
 <meta property="og:url" content="http://yoursite.com/2018/01/10/GCD of Swift 4.0/index.html">
 <meta property="og:site_name" content="WuhooBigBoss的博客">
-<meta property="og:description" content="##GCD ConceptsGrand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。 ###Concurrency 在iOS中，一个进程或应用程序由一个或多个线程组">
+<meta property="og:description" content="##GCD Concepts Grand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20001.png">
-<meta property="og:updated_time" content="2018-01-10T10:01:39.225Z">
+<meta property="og:updated_time" content="2018-01-11T01:21:27.499Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCD of Swift 4.0">
-<meta name="twitter:description" content="##GCD ConceptsGrand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。 ###Concurrency 在iOS中，一个进程或应用程序由一个或多个线程组">
+<meta name="twitter:description" content="##GCD Concepts Grand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的Dispatch Queue中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。">
 <meta name="twitter:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20001.png">
 
 
@@ -409,16 +409,18 @@
       
 
       
-        <p>##GCD Concepts<br>Grand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的<code>Dispatch Queue</code>中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。</p>
-<p>###Concurrency<br><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20001.png" alt=""></p>
+        <p>##GCD Concepts</p>
+<p>Grand Central Dispatch（GCD）是iOS开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的<code>Dispatch Queue</code>中，GCD就能自行生成必要的线程并计划执行任务。GCD将线程进行统一调度和管理，比之前的线程使用效率更高。</p>
+<a id="more"></a>
+<p>###Concurrency</p>
+<p><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20001.png" alt=""></p>
 <p>在iOS中，一个进程或应用程序由一个或多个线程组成。线程由操作系统调度程序独立管理。每个线程可以同时执行，但是由系统决定是否发生这种情况以及如何发生。</p>
-<p>单核设备可以通过时间片来实现并发。他们将运行一个线程，执行上下文切换，然后运行另一个线程。</p>
-<p>另一方面，多核设备通过并行执行多个线程同时执行。</p>
-<p>GCD建立在线程之上。它下面管理一个共享的线程池。使用GCD，您可以添加代码块或工作项来调度队列，GCD决定在哪个线程上执行它们。</p>
-<p>当你构建代码时，你会发现可以同时运行的代码块，有些代码块不应该运行。这就允许你使用GCD来利用并发执行。</p>
-<p>请注意，GCD根据系统和可用系统资源决定需要多少并行性。需要注意的是并行性需要并发性，但并发并不能保证并行性。</p>
+<p>单核设备可以通过时间片来实现并发。他们将运行一个线程，执行上下文切换，然后运行另一个线程。另一方面，多核设备通过并行执行多个线程同时执行。</p>
+<p>GCD建立在线程之上。它下面管理一个共享的线程池。使用GCD，您可以添加代码块或工作项来调度队列，GCD决定在哪个线程上执行它们。当你构建代码时，你会发现可以同时运行的代码块，有些代码块不应该运行。这就允许你使用GCD来利用并发执行。</p>
+<p><strong>请注意：</strong>GCD根据系统和可用系统资源决定需要多少并行性。需要注意的是并行性需要并发性，但并发并不能保证并行性。</p>
 <p>基本上，并发是关于结构，而并行是关于执行。</p>
-<p>###Dispatch Queue<br>Dispatch Queue是用来添加任务的队列，任务在队列中执行，是GCD的基本元素之一。<br>Dispatch Queue分为两种：</p>
+<p>###Dispatch Queue</p>
+<p>Dispatch Queue是用来添加任务的队列，任务在队列中执行，是GCD的基本元素之一。<br>Dispatch Queue分为两种：</p>
 <blockquote>
 <ul>
 <li>Serial Dispatch Queue：串行队列，按添加进队列的顺序（先进先出）一个接一个的执行</li>
