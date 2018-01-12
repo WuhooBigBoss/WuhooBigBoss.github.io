@@ -135,7 +135,7 @@
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20002.png">
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20003.png">
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20004.png">
-<meta property="og:updated_time" content="2018-01-12T06:38:15.650Z">
+<meta property="og:updated_time" content="2018-01-12T06:44:10.533Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCD of Swift 4.0">
 <meta name="twitter:description" content="GCD ConceptsGrand Central Dispatch（GCD）是 iOS 开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的 DispatchQueue 中，GCD 就能自行生成必要的线程并计划执行任务。GCD 将线程进行统一调度和管理，比之前的线程使用效率更高。">
@@ -423,31 +423,22 @@
 <h3 id="DispatchQueue"><a href="#DispatchQueue" class="headerlink" title="DispatchQueue"></a>DispatchQueue</h3><p>GCD 提供 DispatchQueue 来调度和管理提交的任务，DispatchQueue 是用来添加任务的队列，任务在队列中执行，是GCD的基本元素之一。</p>
 <p>调度队列是线程安全的，这意味着您可以同时从多个线程访问它们。当了解调度队列如何为自己的代码部分提供线程安全性时，GCD 的好处就显而易见了。这里的关键是要选择合适的调度队列种类提交到队列中。</p>
 <h4 id="Serial（串行）和-Concurrent（并发）"><a href="#Serial（串行）和-Concurrent（并发）" class="headerlink" title="Serial（串行）和 Concurrent（并发）"></a>Serial（串行）和 Concurrent（并发）</h4><p>队列可以是串行或并发的。串行队列保证在任何给定的时间只有一个任务运行。GCD 控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：</p>
-<blockquote>
 <ul>
 <li>Serial DispatchQueue：串行队列，串行队列保证在任何给定的时间只有一个任务运行。GCD 控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：<br><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20002.png" alt="GCD of Swift 4.0 - 002"></li>
 </ul>
-</blockquote>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> serialQueue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.leo.serialQueue"</span>)</span><br></pre></td></tr></table></figure>
-<blockquote>
 <ul>
 <li>Concurrent DispatchQueue：并发队列，并发队列允许同时运行多个任务。保证任务按照他们添加的顺序开始。任务可以按任意顺序完成，并且您不知道下一个任务要开始的时间，也不知道在任何给定时间运行的任务的数量。<br><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20003.png" alt="GCD of Swift 4.0 - 003"></li>
 </ul>
-</blockquote>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> concurrentQueue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.leo.concurrentQueue"</span>,attributes:.concurrent)</span><br></pre></td></tr></table></figure>
-<h4 id="Sync（同步）和-Async（异步）"><a href="#Sync（同步）和-Async（异步）" class="headerlink" title="Sync（同步）和 Async（异步）"></a>Sync（同步）和 Async（异步）</h4><p>使用GCD，可以同步或异步分派任务。</p>
-<ul>
-<li>sync（同步）提交一段任务到队列，并且阻塞当前线程，任务结束后当前线程继续执行。</li>
-</ul>
+<h4 id="Sync（同步）和-Async（异步）"><a href="#Sync（同步）和-Async（异步）" class="headerlink" title="Sync（同步）和 Async（异步）"></a>Sync（同步）和 Async（异步）</h4><p><strong>sync（同步）：提交一段任务到队列，并且阻塞当前线程，任务结束后当前线程继续执行。</strong></p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> PlaygroundSupport</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">readDataTask</span><span class="params">(label:String)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Start sync task"</span> + label)</span><br><span class="line">    sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"End sync task"</span> + label)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> serialQueue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.leo.queue"</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Main queue Start"</span>)</span><br><span class="line">serialQueue.sync &#123;</span><br><span class="line">    readDataTask(label: <span class="string">"1"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Main queue End"</span>)</span><br></pre></td></tr></table></figure>
 <p>Log如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Main queue Start</span><br><span class="line">Start sync task1</span><br><span class="line">End sync task1</span><br><span class="line">Main queue End</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>sync是一个强大但是容易被忽视的函数。使用sync，可以方便的进行线程间同步。但是，有一点要注意，sync容易造成死锁。</p>
 </blockquote>
-<ul>
-<li>async 提交一段任务到队列，并且立刻返回。</li>
-</ul>
+<p><strong>async（异步）： 提交一段任务到队列，并且立刻返回。</strong></p>
 <p>1、串行队列中：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> PlaygroundSupport</span><br><span class="line"></span><br><span class="line"><span class="comment">//允许程序在代码运行完后继续不断运行，适用于有异步处理的 Playground</span></span><br><span class="line"><span class="type">PlaygroundPage</span>.current.needsIndefiniteExecution = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">readDataTask</span><span class="params">(label:String)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Start async task"</span> + label)</span><br><span class="line">    sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"End async task"</span> + label)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> serialQueue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.leo.serialQueue"</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Main queue Start"</span>)</span><br><span class="line">serialQueue.async &#123;</span><br><span class="line">    readDataTask(label: <span class="string">"1"</span>)</span><br><span class="line">&#125;</span><br><span class="line">serialQueue.async &#123;</span><br><span class="line">    readDataTask(label: <span class="string">"2"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Main queue End"</span>)</span><br></pre></td></tr></table></figure>
 <p>log如下：</p>
