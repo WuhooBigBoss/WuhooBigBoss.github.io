@@ -325,7 +325,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/10/GCD of Swift 4.0/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/01/10/GCD of Swift 4.0/" itemprop="url">GCD of Swift 4.0</a></h1>
         
 
         <div class="post-meta">
@@ -347,6 +347,39 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/Swift/" itemprop="url" rel="index">
+                    <span itemprop="name">Swift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -376,158 +409,14 @@
 
       
         
-          
-            <hr>
-<p>title: GCD of Swift 4.0<br>date: 2018<em>01</em>10 15:33:26<br>tags: </p>
-<ul>
-<li>GCD<br>categories:</li>
-<li>iOS</li>
-<li>Swift</li>
-</ul>
-<hr>
-<h2 id="GCD-Concepts"><a href="#GCD-Concepts" class="headerlink" title="GCD Concepts"></a>GCD Concepts</h2><p>Grand Central Dispatch（GCD）是 iOS 开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的 <code>DispatchQueue</code> 中，GCD 就能自行生成必要的线程并计划执行任务。GCD 将线程进行统一调度和管理，比之前的线程使用效率更高。</p>
-<p>&lt;!<strong>more</strong>&gt;</p>
-<h3 id="Concurrency"><a href="#Concurrency" class="headerlink" title="Concurrency"></a>Concurrency</h3><p><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20*%20001.png" alt="GCD of Swift 4.0 * 001"></p>
-<p>在iOS中，一个进程或应用程序由一个或多个线程组成。线程由操作系统调度程序独立管理。每个线程可以同时执行，但是由系统决定是否发生这种情况以及如何发生。</p>
-<p>单核设备可以通过时间片来实现并发。他们将运行一个线程，执行上下文切换，然后运行另一个线程。另一方面，多核设备通过并行执行多个线程同时执行。</p>
-<p>GCD 建立在线程之上。它下面管理一个共享的线程池。使用 GCD，您可以添加代码块或工作项来调度队列，GCD 决定在哪个线程上执行它们。当你构建代码时，你会发现可以同时运行的代码块，有些代码块不应该运行。这就允许你使用 GCD 来利用并发执行。</p>
-<p><strong>请注意：</strong>GCD 根据系统和可用系统资源决定需要多少并行性。需要注意的是并行性需要并发性，但并发并不能保证并行性。</p>
-<p>基本上，并发是关于结构，而并行是关于执行。</p>
-<h3 id="DispatchQueue"><a href="#DispatchQueue" class="headerlink" title="DispatchQueue"></a>DispatchQueue</h3><p>GCD 提供 DispatchQueue 来调度和管理提交的任务，DispatchQueue 是用来添加任务的队列，任务在队列中执行，是GCD的基本元素之一。</p>
-<p>调度队列是线程安全的，这意味着您可以同时从多个线程访问它们。当了解调度队列如何为自己的代码部分提供线程安全性时，GCD 的好处就显而易见了。这里的关键是要选择合适的调度队列种类提交到队列中。</p>
-<p>队列可以是串行或并发的。串行队列保证在任何给定的时间只有一个任务运行。GCD 控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：</p>
-<blockquote>
-<ul>
-<li><p>Serial DispatchQueue：串行队列，串行队列保证在任何给定的时间只有一个任务运行。GCD 控制执行时间。你不会知道一个任务结束和下一个任务开始之间的时间长短：<br><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20*%20002.png" alt="GCD of Swift 4.0 * 002"></p>
-</li>
-<li><p>Concurrent DispatchQueue：并发队列，并发队列允许同时运行多个任务。保证任务按照他们添加的顺序开始。任务可以按任意顺序完成，并且您不知道下一个任务要开始的时间，也不知道在任何给定时间运行的任务的数量。<br><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20*%20003.png" alt="GCD of Swift 4.0 * 003"></p>
-</li>
-</ul>
-</blockquote>
-<h4 id="Sync（同步）和-Async（异步）"><a href="#Sync（同步）和-Async（异步）" class="headerlink" title="Sync（同步）和 Async（异步）"></a>Sync（同步）和 Async（异步）</h4><p>使用GCD，可以同步或异步分派任务。</p>
-<ul>
-<li><p>同步任务在任务完成之后才会将控制权返回给调用者。</p>
-</li>
-<li><p>异步任务会在开始后立即将控制权返回给调用者，命令完成任务但不等待它。因此，异步函数不会阻止当前的执行线程继续执行下一个函数。</p>
-</li>
-</ul>
-<h4 id="Quality-Of-Service（QoS）和优先级"><a href="#Quality-Of-Service（QoS）和优先级" class="headerlink" title="Quality Of Service（QoS）和优先级"></a>Quality Of Service（QoS）和优先级</h4><p>在使用 GCD 与 DispatchQueue 时，我们经常需要告诉系统，应用程序中的哪些任务比较重要，需要更高的优先级去执行。当然，由于主队列总是用来处理 UI 以及界面的响应，所以在主线程执行的任务永远都有最高的优先级。不管在哪种情况下，只要告诉系统必要的信息，iOS 就会根据你的需求安排好队列的优先级以及它们所需要的资源（比如说所需的 CPU 执行时间）。虽然所有的任务最终都会完成，但是，重要的区别在于哪些任务更快完成，哪些任务完成得更晚。</p>
-<p>用于指定任务重要程度以及优先级的信息，在 GCD 中被称为 Quality of Service（QoS）。事实上，QoS 是有几个特定值的枚举类型，可以根据需要的优先级，使用合适的 QoS 值来初始化队列。如果没有指定 QoS，则队列会使用默认优先级进行初始化。下面的列表总结了 Qos 可用的值，它们也被称为 QoS classes。第一个 class 代码了最高的优先级，最后一个代表了最低的优先级：</p>
-<ul>
-<li>userInteractive</li>
-<li>userInitiated</li>
-<li>default</li>
-<li>utility</li>
-<li>background</li>
-<li>unspecified</li>
-</ul>
-<h4 id="DispatchWorkItem"><a href="#DispatchWorkItem" class="headerlink" title="DispatchWorkItem"></a>DispatchWorkItem</h4><p>DispatchWorkItem 是任务类。在DispatchQueue执行操作除了直接传了一个 () *&gt; Void 类型的闭包外，还可以传入一个DispatchWorkItem。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">sync</span><span class="params">(execute workItem: DispatchWorkItem)</span></span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">async</span><span class="params">(execute workItem: DispatchWorkItem)</span></span></span><br></pre></td></tr></table></figure>
-<p>DispatchWorkItem的初始化方法可以配置Qos和DispatchWorkItemFlags，但是这两个参数都有默认参数，所以也可以只传入一个闭包。</p>
-<p>DispatchWorkItem 也有 wait 方法，使用方式和 group 一样。调用会等待这个 workItem 执行完。</p>
-<h4 id="获得-DispatchQueue-的方法"><a href="#获得-DispatchQueue-的方法" class="headerlink" title="获得 DispatchQueue 的方法"></a>获得 DispatchQueue 的方法</h4><p>GCD提供三种主要类型的队列：</p>
-<ul>
-<li>主队列：在主线程上运行，是一个串行队列。</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DispatchQueue</span>.main.async &#123;  <span class="comment">// 主队列异步任务</span></span><br><span class="line">	&lt;#code#&gt;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="type">DispatchQueue</span>.main.sync &#123;	  <span class="comment">// 主队列同步任务	</span></span><br><span class="line">	&lt;#code#&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>全局队列： 由整个系统共享的并发队列。</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DispatchQueue</span>.global().async &#123;  <span class="comment">// 全局队列异步任务</span></span><br><span class="line">	&lt;#code#&gt;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="type">DispatchQueue</span>.global().sync &#123;	  <span class="comment">// 全局队列同步任务	</span></span><br><span class="line">	&lt;#code#&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>自定义队列：创建的可以是串行或并发的队列。全局队列实际上是自定义队列的一种。</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> queue = <span class="type">DispatchQueue</span>(label: &lt;#<span class="type">T</span>##<span class="type">String</span>#&gt;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> queue = <span class="type">DispatchQueue</span>(label: &lt;#<span class="type">T</span>##<span class="type">String</span>#&gt;, qos: &lt;#<span class="type">T</span>##<span class="type">DispatchQoS</span>#&gt;, attributes: &lt;#<span class="type">T</span>##<span class="type">DispatchQueue</span>.<span class="type">Attributes</span>#&gt;, autoreleaseFrequency: &lt;#<span class="type">T</span>##<span class="type">DispatchQueue</span>.<span class="type">AutoreleaseFrequency</span>#&gt;, target: &lt;#<span class="type">T</span>##<span class="type">DispatchQueue</span>?#&gt;)</span><br></pre></td></tr></table></figure>
-<p>设置并发队列时，不是直接指定优先级。而是指定一个服务质量（QoS）类属性。这将表明任务的重要性，并指导 GCD 确定优先任务。</p>
-<h2 id="GCD-的使用"><a href="#GCD-的使用" class="headerlink" title="GCD 的使用"></a>GCD 的使用</h2><h3 id="执行耗时操作和UI更新"><a href="#执行耗时操作和UI更新" class="headerlink" title="执行耗时操作和UI更新"></a>执行耗时操作和UI更新</h3><p>带优先级的全局异步线程中识别人脸头像之后，回到主线程中更新UI：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: * Lifecycle</span></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">  </span><br><span class="line">  <span class="type">DispatchQueue</span>.global(qos: .userInitiated).async &#123; <span class="comment">// 1</span></span><br><span class="line">      <span class="keyword">let</span> overlayImage = <span class="keyword">self</span>.faceOverlayImageFromImage(<span class="keyword">self</span>.image)</span><br><span class="line">      <span class="type">DispatchQueue</span>.main.async &#123; <span class="comment">// 2</span></span><br><span class="line">          <span class="keyword">self</span>.fadeInNewImage(overlayImage) <span class="comment">// 3</span></span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码实现过程：</p>
-<ul>
-<li>1: 将耗时的人脸检测工作移至后台全局队列，并异步运行闭包中的工作。这可以让 viewDidLoad() 主线更早完成，使装载感觉更加活泼。</li>
-<li>2: 人脸检测处理完成后，生成了一个新的图像。要使用这个新的图像来更新 UIImageView 的操作必须在主线程中进行，所以，再添加更新UI的闭包到主队列中执行。</li>
-<li>3: 最后，完成更新UIImageView的任务。</li>
-</ul>
-<h3 id="延时执行任务"><a href="#延时执行任务" class="headerlink" title="延时执行任务"></a>延时执行任务</h3><p>DispatchQueue允许控制延迟时间来执行任务。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法1：2秒后退出VC</span></span><br><span class="line"><span class="keyword">let</span> additionalTime: <span class="type">DispatchTimeInterval</span> = .seconds(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() + additionalTime) &#123;</span><br><span class="line">    <span class="keyword">self</span>.navigationController?.popViewController(animated: <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法2：2秒后退出VC</span></span><br><span class="line"><span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() + <span class="number">2.0</span>) &#123;</span><br><span class="line">    <span class="keyword">self</span>.navigationController?.popViewController(animated: <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="barrier队列控制标签"><a href="#barrier队列控制标签" class="headerlink" title="barrier队列控制标签"></a>barrier队列控制标签</h3><p>在 Swift 中，用 let 关键字声明的任何变量都被认为是一个常量，并且是只读的和线程安全的。而用 var 关键字声明变量，除非数据类型被设计成只读，否则它将是可变的、并且不是线程安全的。</p>
-<p>例如：Swift 集合类型和字典类型被声明为可变时对其进行操作就不是线程安全的，因为一个线程在读取 Array 和 Dictionary 的数据时，另一个线程去改变这些数据就会造成数据不安全。</p>
-<p>对于这类线程不安全的问题，GCD 提供了使用 <strong>调度障碍</strong> 创建读/写锁的优雅解决方案。分派障碍是在处理并发队列时作为串行风格的方法。</p>
-<p>当你提交一个 DispatchWorkItem 派遣队列时，你可以设置 <code>barrier</code> 标志来表明它应该是在特定时间在指定队列上执行的唯一任务。这意味着所有在 <code>barrier</code> 标志任务之前提交给队列的任务必须在其执行之前完成；当轮到 <code>barrier</code> 标志任务执行时屏障执行它，并确保在其执行期间，队列不执行任何其他任务。完成后，队列返回到其默认实现。</p>
-<p><img src="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20*%20004.png" alt="GCD of Swift 4.0 * 004"></p>
-<p><strong>如上图：</strong> 对于包含 <code>barrier</code> 标志的并发队列，在正常操作中，队列的行为与正常的并发队列一样。但是，当屏障执行时，它基本上就像一个串行队列。也就是说，障碍是唯一执行的事情。屏障完成后，队列返回正常的并发队列。</p>
-<p><strong>注意：</strong> </p>
-<ul>
-<li>在全局后台并发队列中使用障碍时要小心，因为这些队列是共享资源；</li>
-<li>在自定义串行队列中使用障碍是多余的，因为它已经连续执行；</li>
-<li>在自定义并发队列中使用障碍是处理代码关键区域的原子线程安全性的最佳选择。</li>
-</ul>
-<p><strong>使用示例：</strong></p>
-<p>因为照片的读取和写入操作可能同时进行。下面的代码实现了在可变 Array 中 <code>线程安全</code> 地读取和写入数据的方法（控制在添加照片时不会进行照片读取）：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> concurrentPhotoQueue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.raywenderlich.GooglyPuff.photoQueue"</span>, attributes: .concurrent)	<span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> _photos: [<span class="type">Photo</span>] = []</span><br><span class="line"><span class="comment">//读取照片数据</span></span><br><span class="line"><span class="keyword">var</span> photos: [<span class="type">Photo</span>] &#123;</span><br><span class="line">    <span class="keyword">var</span> photosCopy: [<span class="type">Photo</span>]!</span><br><span class="line">    concurrentPhotoQueue.sync &#123; <span class="comment">// 2</span></span><br><span class="line">        photosCopy = <span class="keyword">self</span>._photos <span class="comment">// 3</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> photosCopy</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//写入照片数据</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addPhoto</span><span class="params">(<span class="number">_</span> photo: Photo)</span></span> &#123;</span><br><span class="line">    concurrentPhotoQueue.async(flags: .barrier) &#123;	<span class="comment">// 4</span></span><br><span class="line">        <span class="keyword">self</span>._photos.append(photo)	<span class="comment">// 5</span></span><br><span class="line">        </span><br><span class="line">        <span class="type">DispatchQueue</span>.main.async &#123;	<span class="comment">// 6</span></span><br><span class="line">            <span class="keyword">self</span>.postContentAddedNotification()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码实现过程：</p>
-<ul>
-<li>1: 自定义一个并发队列，在其中执行照片读取和写入任务。</li>
-<li>2: 建立同步线程并添加到队列中，执行图片的读取任务。</li>
-<li>3: 读取存储照片的Array数据。</li>
-<li>4: 使用  <code>barrier</code> 标志建立一个异步线程并添加到队列中，执行添加照片到Array中的任务。</li>
-<li>5: 线程中执行添加照片的任务。</li>
-<li>6: 添加照片完成后在主线程发送更新UI的通知。</li>
-</ul>
-<h3 id="DispatchGroup"><a href="#DispatchGroup" class="headerlink" title="DispatchGroup"></a>DispatchGroup</h3><p>如果想在 DispatchQueue 中的某些任务执行完成后再做某种操作可以使用 <code>DispatchGroup</code> 。</p>
-<ul>
-<li><strong>不同队列下的任务放到同一个 Group 中:</strong></li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> group = <span class="type">DispatchGroup</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> queueDownload1 = <span class="type">DispatchQueue</span>(label: <span class="string">"com.Download1"</span>)</span><br><span class="line">queueDownload1.async(group: group) &#123;</span><br><span class="line">    <span class="comment">// up task 1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> queueDownload2 = <span class="type">DispatchQueue</span>(label: <span class="string">"com.Download2"</span>)</span><br><span class="line">queueDownload2.async(group: group) &#123;</span><br><span class="line">    <span class="comment">// up task 2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">group.notify(queue: <span class="type">DispatchQueue</span>.main) &#123;</span><br><span class="line">    <span class="comment">// 等待上面两个task下载完成后在主队列中执行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>Group 在代码块中使用:</strong></li>
-</ul>
-<p>如下图片下载方法： <code>DownloadPhoto</code> 是异步下载图片的方法，需要在所有图片下载完成之后才能执行完成闭包</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">downloadPhotosWithCompletion</span><span class="params">(<span class="number">_</span> completion: BatchPhotoDownloadingCompletionClosure?)</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> storedError: <span class="type">NSError</span>?</span><br><span class="line">    <span class="keyword">let</span> downloadGroup = <span class="type">DispatchGroup</span>()	 <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">for</span> address <span class="keyword">in</span> [overlyAttachedGirlfriendURLString,</span><br><span class="line">                    successKidURLString,</span><br><span class="line">                    lotsOfFacesURLString] &#123;</span><br><span class="line">                        <span class="keyword">let</span> url = <span class="type">URL</span>(string: address)</span><br><span class="line">                        downloadGroup.enter()	<span class="comment">// 2</span></span><br><span class="line">                        <span class="keyword">let</span> photo = <span class="type">DownloadPhoto</span>(url: url!) &#123;  <span class="comment">// 3</span></span><br><span class="line">                            <span class="number">_</span>, error <span class="keyword">in</span></span><br><span class="line">                            <span class="keyword">if</span> error != <span class="literal">nil</span> &#123;</span><br><span class="line">                                storedError = error</span><br><span class="line">                            &#125;</span><br><span class="line">                            downloadGroup.leave()	<span class="comment">// 4</span></span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="type">PhotoManager</span>.sharedManager.addPhoto(photo)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    downloadGroup.notify(queue: <span class="type">DispatchQueue</span>.main) &#123; <span class="comment">// 5</span></span><br><span class="line">        completion?(storedError)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码实现过程：</p>
-<ul>
-<li>1: 创建一个 DispatchGroup。</li>
-<li>2: 单个下载任务开始前 Group 标记 enter。</li>
-<li>3: 单个下载任务开始。</li>
-<li>4: 单个下载任务完成后 Group 标记 leave。</li>
-<li>5: 所有下载任务完成后才会回到主线程执行完成闭包</li>
-</ul>
-<h3 id="Concurrency-Looping"><a href="#Concurrency-Looping" class="headerlink" title="Concurrency Looping"></a>Concurrency Looping</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DispatchQueue</span>.concurrentPerform(iterations: <span class="number">3</span>) &#123; (i) <span class="keyword">in</span></span><br><span class="line">    &lt;#code#&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的 <code>DispatchQueue.concurrentPerform</code> 和 for 循环的工作方式类似，它同时执行不同的迭代。它是同步的，只有当所有的工作完成后才会返回。</p>
-<p>什么时候适合使用这种方法：对于串行队列而言，这没有任何好处，可以使用正常的for循环；包含循环的并发队列是一个很好的选择，特别是如果你需要跟踪进度时。</p>
-<p><strong>注意：</strong>在给任务计算最佳迭代次数时必须小心。 <strong>过多的迭代</strong> 和 <strong>每次迭代都只是很少的工作量</strong> 时可能会产生太多的开销，从而使得调用并发线程的收益甚微。 <strong>迭代次数较少</strong> 和 <strong>每次迭代的工作量大</strong> 更适合这种方法。</p>
-<h3 id="DispatchSemaphore"><a href="#DispatchSemaphore" class="headerlink" title="DispatchSemaphore"></a>DispatchSemaphore</h3><p>为了线程安全的统计数量，我们会使用信号量作计数。简单来说，只有信号量技术大于0时才能执行任务。使用方法如下：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> semaphore = <span class="type">DispatchSemaphore</span>(value: <span class="number">5</span>) </span><br><span class="line"><span class="comment">// 信号量减一</span></span><br><span class="line">semaphore.wait() </span><br><span class="line"><span class="comment">// 信号量加一</span></span><br><span class="line">semaphore.signal()</span><br></pre></td></tr></table></figure>
-<p>下面的代码使用 DispatchSemaphore ，控制只同时执行两个异步任务。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> semaphore = <span class="type">DispatchSemaphore</span>(value: <span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> queue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.leo.concurrentQueue"</span>, qos: .<span class="keyword">default</span>, attributes: .concurrent)</span><br><span class="line"></span><br><span class="line">queue.async &#123;</span><br><span class="line">    semaphore.wait()</span><br><span class="line">    usbTask(label: <span class="string">"1"</span>, cost: <span class="number">2</span>, complete: &#123; </span><br><span class="line">        semaphore.signal()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">queue.async &#123;</span><br><span class="line">    semaphore.wait()</span><br><span class="line">    usbTask(label: <span class="string">"2"</span>, cost: <span class="number">2</span>, complete: &#123;</span><br><span class="line">        semaphore.signal()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">queue.async &#123;</span><br><span class="line">    semaphore.wait()</span><br><span class="line">    usbTask(label: <span class="string">"3"</span>, cost: <span class="number">1</span>, complete: &#123;</span><br><span class="line">        semaphore.signal()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="DispatchSource"><a href="#DispatchSource" class="headerlink" title="DispatchSource"></a>DispatchSource</h3><p>DispatchSource 提供了一组接口，用来提交hander监测底层的事件，这些事件包括 Mach ports，Unix descriptors，Unix signals，VFS nodes。</p>
-<p><strong>这组事件包括：</strong></p>
-<blockquote>
-<p>Tips: DispatchSource 这个 class 很好的体现了 Swift 是一门面向协议的语言。这个类是一个工厂类，用来实现各种 source 。比如 DispatchSourceTimer（本身是个协议）表示一个定时器。</p>
-</blockquote>
-<h4 id="DispatchSourceProtocol"><a href="#DispatchSourceProtocol" class="headerlink" title="DispatchSourceProtocol"></a>DispatchSourceProtocol</h4><p>DispatchSource 的基础协议，所有的用到的 DispatchSource 都实现了这个协议。这个协议的提供了公共的方法和属性：</p>
-<p>不同的 source 是用到的属性和方法不一样，下面列出几个公共的方法：</p>
-<p><a href="https://developer.apple.com/documentation/dispatch/dispatchsourceprotocol" target="_blank" rel="noopener">官方文档</a></p>
-<ul>
-<li>activate //激活</li>
-<li>suspend //挂起</li>
-<li>resume //继续</li>
-<li>cancel //取消(异步的取消，会保证当前 eventHander 执行完)</li>
-<li>setEventHandler //事件处理逻辑</li>
-<li>setCancelHandler //取消时候的清理逻辑</li>
-</ul>
-<p>下面对开发中常用的 <strong>timer</strong> 和 <strong>userData</strong> 的使用进行说明</p>
-<h4 id="DispatchSourceTimer"><a href="#DispatchSourceTimer" class="headerlink" title="DispatchSourceTimer"></a>DispatchSourceTimer</h4><p>在 Swift 中，可以方便的用 GCD 创建一个 Timer (新特性)。 DispatchSourceTimer 本身是一个协议。</p>
-<p>比如，写一个 timer ，1秒后执行，然后10秒后自动取消，允许10毫秒的误差</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> PlaygroundSupport</span><br><span class="line"></span><br><span class="line"><span class="comment">//允许程序在代码运行完后继续不断运行，适用于有异步处理的 Playground</span></span><br><span class="line"><span class="type">PlaygroundPage</span>.current.needsIndefiniteExecution = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">let</span> timer = <span class="type">DispatchSource</span>.makeTimerSource()</span><br><span class="line"></span><br><span class="line">timer.setEventHandler &#123;</span><br><span class="line">    <span class="comment">//这里要注意循环引用，[weak self] in</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Timer fired at <span class="subst">\(NSDate()</span>)"</span>)</span><br><span class="line">&#125;</span><br><span class="line">timer.setCancelHandler &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Timer canceled at <span class="subst">\(NSDate()</span>)"</span> )</span><br><span class="line">&#125;</span><br><span class="line">timer.schedule(deadline: .now() + .seconds(<span class="number">1</span>), repeating: <span class="number">2.0</span>, leeway: .microseconds(<span class="number">10</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Timer activate at <span class="subst">\(NSDate()</span>)"</span>)</span><br><span class="line">timer.activate()</span><br><span class="line"><span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() + .seconds(<span class="number">10</span>), execute:&#123;</span><br><span class="line">    timer.cancel()</span><br><span class="line">    <span class="comment">//结束 Playground 运行</span></span><br><span class="line">    <span class="type">PlaygroundPage</span>.current.finishExecution()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p><strong>其中参数:</strong></p>
-<p><code>deadline</code> 表示开始时间。</p>
-<p><code>leeway</code> 表示能够容忍的误差。</p>
-<p><strong>会看到Log:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Timer activate at 2018-01-12 02:01:27 +0000</span><br><span class="line">Timer fired at 2018-01-12 02:01:28 +0000</span><br><span class="line">Timer fired at 2018-01-12 02:01:30 +0000</span><br><span class="line">Timer fired at 2018-01-12 02:01:32 +0000</span><br><span class="line">Timer fired at 2018-01-12 02:01:34 +0000</span><br><span class="line">Timer fired at 2018-01-12 02:01:36 +0000</span><br><span class="line">Timer canceled at 2018-01-12 02:01:37 +0000</span><br></pre></td></tr></table></figure>
-<p><strong>DispatchSourceTimer 也支持只调用一次：</strong></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">scheduleOneshot</span><span class="params">(deadline: DispatchTime, leeway: DispatchTimeInterval = <span class="keyword">default</span>)</span></span></span><br></pre></td></tr></table></figure>
-<h4 id="DispatchSourceUserDataAdd-amp-amp-DispatchSourceUserDataOr"><a href="#DispatchSourceUserDataAdd-amp-amp-DispatchSourceUserDataOr" class="headerlink" title="DispatchSourceUserDataAdd &amp;&amp; DispatchSourceUserDataOr"></a>DispatchSourceUserDataAdd &amp;&amp; DispatchSourceUserDataOr</h4>
-          
+          <h2 id="GCD-Concepts"><a href="#GCD-Concepts" class="headerlink" title="GCD Concepts"></a>GCD Concepts</h2><p>Grand Central Dispatch（GCD）是 iOS 开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的 <code>DispatchQueue</code> 中，GCD 就能自行生成必要的线程并计划执行任务。GCD 将线程进行统一调度和管理，比之前的线程使用效率更高。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/10/GCD of Swift 4.0/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
