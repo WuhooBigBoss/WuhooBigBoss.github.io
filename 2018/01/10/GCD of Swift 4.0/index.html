@@ -135,7 +135,7 @@
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20002.png">
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20003.png">
 <meta property="og:image" content="http://o92bcces7.bkt.clouddn.com/MyBoly/Pic/GCD%20of%20Swift%204.0%20-%20004.png">
-<meta property="og:updated_time" content="2018-01-12T06:51:19.350Z">
+<meta property="og:updated_time" content="2018-01-12T08:57:55.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCD of Swift 4.0">
 <meta name="twitter:description" content="GCD ConceptsGrand Central Dispatch（GCD）是 iOS 开发中异步执行任务的技术之一，是对线程管理类的封装。开发者只需要定义需要执行的任务并添加到适当的 DispatchQueue 中，GCD 就能自行生成必要的线程并计划执行任务。GCD 将线程进行统一调度和管理，比之前的线程使用效率更高。">
@@ -564,6 +564,60 @@
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> semaphore = <span class="type">DispatchSemaphore</span>(value: <span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> queue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.leo.concurrentQueue"</span>, qos: .<span class="keyword">default</span>, attributes: .concurrent)</span><br><span class="line"></span><br><span class="line">queue.async &#123;</span><br><span class="line">    semaphore.wait()</span><br><span class="line">    usbTask(label: <span class="string">"1"</span>, cost: <span class="number">2</span>, complete: &#123; </span><br><span class="line">        semaphore.signal()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">queue.async &#123;</span><br><span class="line">    semaphore.wait()</span><br><span class="line">    usbTask(label: <span class="string">"2"</span>, cost: <span class="number">2</span>, complete: &#123;</span><br><span class="line">        semaphore.signal()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">queue.async &#123;</span><br><span class="line">    semaphore.wait()</span><br><span class="line">    usbTask(label: <span class="string">"3"</span>, cost: <span class="number">1</span>, complete: &#123;</span><br><span class="line">        semaphore.signal()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="DispatchSource"><a href="#DispatchSource" class="headerlink" title="DispatchSource"></a>DispatchSource</h3><p>DispatchSource 提供了一组接口，用来提交hander监测底层的事件，这些事件包括 Mach ports，Unix descriptors，Unix signals，VFS nodes。</p>
 <p><strong>这组事件包括：</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Protocol</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">DispatchSourceUserDataAdd</td>
+<td style="text-align:center">用户自定义数据add </td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceUserDataOr</td>
+<td style="text-align:center">用户自定义数据Or  </td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceMachSend</td>
+<td style="text-align:center">Mach端口发送  </td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceMachReceive</td>
+<td style="text-align:center">Mach端口接收</td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceMemoryPressure</td>
+<td style="text-align:center">内存压力</td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceProcess</td>
+<td style="text-align:center">进程事件</td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceRead</td>
+<td style="text-align:center">读数据</td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceSignal</td>
+<td style="text-align:center">信号</td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceTimer</td>
+<td style="text-align:center">定时器</td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceFileSystemObject</td>
+<td style="text-align:center">文件系统</td>
+</tr>
+<tr>
+<td style="text-align:center">DispatchSourceWrite</td>
+<td style="text-align:center">写数据</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
 <p>Tips: DispatchSource 这个 class 很好的体现了 Swift 是一门面向协议的语言。这个类是一个工厂类，用来实现各种 source 。比如 DispatchSourceTimer（本身是个协议）表示一个定时器。</p>
 </blockquote>
